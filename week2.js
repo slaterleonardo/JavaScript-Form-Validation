@@ -57,6 +57,10 @@ const formatPhoneNumber = (phoneNumber) => {
   return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
 };
 
+const cleanPhoneNumber = (phoneNumber) => {
+  return phoneNumber.replace(/\D/g, "");
+};
+
 form.addEventListener("submit", function (e) {
   e.preventDefault();
   clearErrors();
@@ -64,26 +68,36 @@ form.addEventListener("submit", function (e) {
   const firstName = document.querySelector("#first-name").value;
   const lastName = document.querySelector("#last-name").value;
   const email = document.querySelector("#email").value;
-  const phoneNumber = document.querySelector("#phone").value;
+  const phoneNumber = cleanPhoneNumber(document.querySelector("#phone").value);
+  let failed;
 
   let [message, ok] = validateName(firstName)
   if (!ok) {
     document.querySelector("#fn-error").textContent = message
+    failed = true;
   }
 
   [message, ok] = validateName(lastName)
   if (!ok) {
     document.querySelector("#ln-error").textContent = message
+    failed = true;
   }
+    
 
   [message, ok] = validateEmail(email)
   if (!ok) {
     document.querySelector("#email-error").textContent = message
+    failed = true;
   }
 
   [message, ok] = validatePhoneNumber(phoneNumber)
   if (!ok) {
     document.querySelector("#phone-error").textContent = message
+    failed = true;
+  }
+
+  if (failed) {
+    return;
   }
 
   form.style.display = "none";
