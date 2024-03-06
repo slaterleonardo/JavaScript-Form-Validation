@@ -68,8 +68,14 @@ form.addEventListener("submit", function (e) {
   const firstName = document.querySelector("#first-name").value;
   const lastName = document.querySelector("#last-name").value;
   const email = document.querySelector("#email").value;
+  const confirmEmail = document.querySelector("#confirm-email").value;
   const phoneNumber = cleanPhoneNumber(document.querySelector("#phone").value);
   let failed;
+
+  if (email !== confirmEmail) {
+    document.querySelector("#confirm-email-error").textContent = "Emails do not match";
+    failed = true;
+  }
 
   let [message, ok] = validateName(firstName)
   if (!ok) {
